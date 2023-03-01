@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true" th:fragment="login">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title fs-5" id="loginModalLabel">Pay my buddy</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                    <input type="text" id="username" name="username" required placeholder="Email">
+                    <input type="password" id="password" name="password" required placeholder="Password">
+            </div>
+            <div class="modal-footer">
+                <input type="submit" value="Se connecter">
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
