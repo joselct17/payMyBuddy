@@ -1,15 +1,18 @@
 package com.joselct17.PayMyBuddy.service;
 
+
 import com.joselct17.PayMyBuddy.model.User;
-import com.joselct17.PayMyBuddy.repository.UserRepository;
+import com.joselct17.PayMyBuddy.repository.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-public class UserService {
-
+@Service
+public class UserService  {
     @Autowired
-    private UserRepository userRepository;
+    private IUserRepository iUserRepository;
 
-    public Iterable<User> getUser() {
-        return userRepository.findAll();
+    public Iterable<User> getUsers() {
+        return iUserRepository.findAll();
     }
+
 }
