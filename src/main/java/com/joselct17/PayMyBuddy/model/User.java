@@ -27,7 +27,7 @@ public class User {
     private String bankAccount;
 
 
-   /* @OneToMany(
+    @OneToMany(
     cascade = CascadeType.ALL,
     orphanRemoval = true,
     fetch = FetchType.EAGER)
@@ -43,12 +43,12 @@ public class User {
     List<Transaction> transactions = new ArrayList<>();
 
 
-    @OneToMany(
-    cascade = CascadeType.ALL,
-    orphanRemoval = true,
-    fetch = FetchType.EAGER)
-    @JoinColumn(name="user_id")
-    List<Role> roles = new ArrayList<>(); */
+    @ManyToMany
+    @JoinTable(
+            name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "roles_id"))
+    private List<Role> roles;
 
 
     //GETTER-SETTER
