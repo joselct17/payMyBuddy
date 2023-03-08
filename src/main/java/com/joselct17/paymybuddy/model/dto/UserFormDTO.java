@@ -1,4 +1,4 @@
-package com.joselct17.PayMyBuddy.model.dto;
+package com.joselct17.paymybuddy.model.dto;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;

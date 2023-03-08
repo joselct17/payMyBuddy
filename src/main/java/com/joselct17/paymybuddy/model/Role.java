@@ -1,4 +1,4 @@
-package com.joselct17.PayMyBuddy.model;
+package com.joselct17.paymybuddy.model;
 
 
 

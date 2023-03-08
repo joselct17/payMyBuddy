@@ -1,4 +1,4 @@
-package com.joselct17.PayMyBuddy.controller;
+package com.joselct17.paymybuddy.controller;
 
 
 import org.slf4j.Logger;

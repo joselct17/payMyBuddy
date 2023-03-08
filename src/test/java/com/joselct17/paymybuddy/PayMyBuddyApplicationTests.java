@@ -1,4 +1,4 @@
-package com.joselct17.PayMyBuddy;
+package com.joselct17.paymybuddy;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

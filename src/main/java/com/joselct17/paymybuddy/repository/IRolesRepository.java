@@ -1,6 +1,6 @@
-package com.joselct17.PayMyBuddy.repository;
+package com.joselct17.paymybuddy.repository;
 
-import com.joselct17.PayMyBuddy.model.Role;
+import com.joselct17.paymybuddy.model.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

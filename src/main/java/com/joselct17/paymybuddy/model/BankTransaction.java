@@ -1,21 +1,21 @@
-package com.joselct17.PayMyBuddy.model;
+package com.joselct17.paymybuddy.model;
 
 
 
 import javax.persistence.*;
 
+
 @Entity
-@Table(name = "transaction")
-public class Transaction {
+@Table(name = "banktransaction")
+public class BankTransaction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "transaction_id")
+    @Column(name = "bankTransaction_id")
     private Integer id;
 
     @Column(name = "dateTime")
     private String dateTime;
-
     @Column(name = "amount")
     private Double amount;
     @Column(name = "currency")

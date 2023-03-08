@@ -1,8 +1,8 @@
-package com.joselct17.PayMyBuddy.service;
+package com.joselct17.paymybuddy.service;
 
 
-import com.joselct17.PayMyBuddy.model.User;
-import com.joselct17.PayMyBuddy.repository.IUserRepository;
+import com.joselct17.paymybuddy.model.User;
+import com.joselct17.paymybuddy.repository.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
