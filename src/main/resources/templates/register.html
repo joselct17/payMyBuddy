@@ -13,11 +13,18 @@
                 <h2 class="modal-title fs-5" id="exampleModalLabel">Pay my buddy</h2>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+
             <div class="modal-body">
-                    <input type="text" id="firstName" name="firstName" required placeholder="First Name">
+                <form method="post" th:object="${userForm}" th:action="@{/registration}" >
+                    <div class="form-group">
+                        <input type="text" id="firstName" name="firstName" required placeholder="First Name">
+                    </div>
+
                     <input type="text" id="lastName" name="lastName" required placeholder="Last Name">
                     <input type="text" id="email" name="username" required placeholder="Email">
                     <input type="password" id="password" name="password" required placeholder="Password">
+                    <input type="password" id="confirmPassword" name="password" required placeholder="Confirm Password">
+                </form>
             </div>
             <div class="modal-footer">
                 <input type="submit" value="S'enregistrer">
