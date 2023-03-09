@@ -16,14 +16,12 @@
 
             <div class="modal-body">
                 <form method="post" th:object="${userForm}" th:action="@{/registration}" >
-                    <div class="form-group">
-                        <input type="text" id="firstName" name="firstName" required placeholder="First Name">
-                    </div>
-
-                    <input type="text" id="lastName" name="lastName" required placeholder="Last Name">
-                    <input type="text" id="email" name="username" required placeholder="Email">
-                    <input type="password" id="password" name="password" required placeholder="Password">
-                    <input type="password" id="confirmPassword" name="password" required placeholder="Confirm Password">
+                    <input type="text" th:field="*{firstName}" id="firstName" name="firstName" required placeholder="First Name">
+                    <input type="text" th:field="*{lastName}" id="lastName" name="lastName" required placeholder="Last Name">
+                    <input type="text" th:field="*{email}" id="email" name="email" required placeholder="Email">
+                    <input type="text" th:field="*{bankAccount}" id="bank" name="bank" required placeholder="Bank Account">
+                    <input type="password" th:field="*{password}" id="password" name="password" required placeholder="Password">
+                    <input type="password" th:field="*{confirmPassword}" id="confirmPassword" name="confirmPassword" required placeholder="Confirm Password">
                     <div class="modal-footer">
                         <input type="submit" value="S'enregistrer">
                     </div>
