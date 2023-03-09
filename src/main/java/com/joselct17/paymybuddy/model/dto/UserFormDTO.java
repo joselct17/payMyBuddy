@@ -1,11 +1,13 @@
 package com.joselct17.paymybuddy.model.dto;
 
+import com.joselct17.paymybuddy.validation.PasswordEqual;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 
 
-
+@PasswordEqual
 public class UserFormDTO {
 
     @NotBlank
