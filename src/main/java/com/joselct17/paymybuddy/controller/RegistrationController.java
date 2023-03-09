@@ -30,13 +30,16 @@ public class RegistrationController {
     public String registration(Model model) {
         model.addAttribute("userForm", new UserFormDTO());
 
-        return "registration";
+        return "userForm";
     }
 
 
     @PostMapping("/registration")
     public String registration(@Valid @ModelAttribute("userForm") UserFormDTO userFormDTO, BindingResult bindingResult, Model model) {
 
+        if (bindingResult.hasErrors()) {
+            return "registration";
+        }
         User user = convertToEntity(userFormDTO);
         iUserService.create(user);
 
