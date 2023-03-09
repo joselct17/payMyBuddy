@@ -22,6 +22,12 @@ public class Transaction {
     private String currency;
 
 
+    public Transaction(Integer id, String dateTime, Double amount, String currency) {
+        this.id = id;
+        this.dateTime = dateTime;
+        this.amount = amount;
+        this.currency = currency;
+    }
 
     public Integer getId() {
         return id;
