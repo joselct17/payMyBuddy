@@ -3,8 +3,12 @@ package com.joselct17.paymybuddy.model;
 
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "roles")
 public class Role {
 
@@ -17,10 +21,6 @@ public class Role {
     private String roleName;
 
 
-    public Role(Integer id, String roleName) {
-        this.id = id;
-        this.roleName = roleName;
-    }
 
     public Integer getId() {
         return id;

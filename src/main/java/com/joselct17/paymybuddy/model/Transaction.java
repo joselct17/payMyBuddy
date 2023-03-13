@@ -3,8 +3,12 @@ package com.joselct17.paymybuddy.model;
 
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "transaction")
 public class Transaction {
 
@@ -22,12 +26,6 @@ public class Transaction {
     private String currency;
 
 
-    public Transaction(Integer id, String dateTime, Double amount, String currency) {
-        this.id = id;
-        this.dateTime = dateTime;
-        this.amount = amount;
-        this.currency = currency;
-    }
 
     public Integer getId() {
         return id;
