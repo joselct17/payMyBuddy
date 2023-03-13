@@ -5,6 +5,7 @@ package com.joselct17.paymybuddy.model;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 @Entity
@@ -49,7 +50,7 @@ public class User {
             name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "roles_id"))
-    private List<Role> roles;
+    private HashSet<Role> roles;
 
 
 
@@ -103,4 +104,27 @@ public class User {
         this.bankAccount = bankAccount;
     }
 
+    public List<BankTransaction> getBankTransactions() {
+        return bankTransactions;
+    }
+
+    public void setBankTransactions(List<BankTransaction> bankTransactions) {
+        this.bankTransactions = bankTransactions;
+    }
+
+    public List<Transaction> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(List<Transaction> transactions) {
+        this.transactions = transactions;
+    }
+
+    public HashSet<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(HashSet<Role> roles) {
+        this.roles = roles;
+    }
 }
