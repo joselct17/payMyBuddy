@@ -1,7 +1,9 @@
 package com.joselct17.paymybuddy.service;
 
 
+import com.joselct17.paymybuddy.model.Role;
 import com.joselct17.paymybuddy.model.User;
+import com.joselct17.paymybuddy.repository.IRolesRepository;
 import com.joselct17.paymybuddy.repository.IUserRepository;
 import com.joselct17.paymybuddy.service.implementation.UserServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,14 +13,14 @@ import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigDecimal;
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -30,14 +32,20 @@ public class UserServiceTest {
     @InjectMocks
     UserServiceImpl userServiceImpl;
 
+    @Mock
+    BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Mock
+    IRolesRepository iRolesRepository;
+
 
     User user1;
     User user2;
 
     @BeforeEach
     void initialize() {
-        user1 = new User(1,"John","Doe","johndoe@mail.com","password","4545dddj",new ArrayList<>(), new ArrayList<>(),new ArrayList<>());
-        user2 = new User(2,"Jane","Doe","janedoe@mail.com","password","45445ddds",new ArrayList<>(),new ArrayList<>(), new ArrayList<>());
+        user1 = new User(1,"John","Doe","johndoe@mail.com","password","4545dddj",new ArrayList<>(), new ArrayList<>(),new HashSet<>());
+        user2 = new User(2,"Jane","Doe","janedoe@mail.com","password","45445ddds",new ArrayList<>(),new ArrayList<>(), new HashSet<>());
     }
 
 
@@ -45,7 +53,7 @@ public class UserServiceTest {
     void testFindByEmail() {
         // Arrange
         String email = "johndoe@mail.com";
-        User user = new User(1,"John","Doe","johndoe@mail.com","password","4545dddj",new ArrayList<>(), new ArrayList<>(),new ArrayList<>());
+        User user = new User(1,"John","Doe","johndoe@mail.com","password","4545dddj",new ArrayList<>(), new ArrayList<>(),new HashSet<>());
         when(iUserRepository.findByEmail(email)).thenReturn(user);
         // Act
         User resultUser = userServiceImpl.findByEmail(email);
@@ -75,6 +83,46 @@ public class UserServiceTest {
 
         // Assert
         assertNull(resultUser);
+
+    }
+
+    @Test
+    void testExistsByEmail() {
+        // Arrange
+        String email = "johndoe@mail.com";
+        when(iUserRepository.existsByEmail(email)).thenReturn(true);
+        // Act
+        Boolean result = userServiceImpl.existsByEmail(email);
+        // Assert
+        assertTrue(result);
+    }
+
+    @Test
+    void createUser() {
+        User user = new User(null, "Marc", "Anthony", "marc@email.com", "password", "1454", new ArrayList<>(),  new ArrayList<>(), new HashSet<>());
+
+        User userExpected = new User(null, "Marc", "Anthony", "marc@email.com", "passwordEncrypted", "1454", new ArrayList<>(),  new ArrayList<>(), new HashSet<>());
+
+        HashSet<Role> hashSet = new HashSet<>();
+
+        hashSet.add(new Role(1, "USER"));
+        userExpected.setRoles(hashSet);
+
+        when(bCryptPasswordEncoder.encode("password")).thenReturn("passwordEncrypted");
+        when(iRolesRepository.findByroleName("USER")).thenReturn(new Role(1, "USER"));
+
+
+        userServiceImpl.create(user);
+
+        verify(iUserRepository, times(1)).save(user);
+
+        assertNull(user.getId());
+        assertEquals(userExpected.getFirstName(),user.getFirstName());
+        assertEquals(userExpected.getLastName(),user.getLastName());
+        assertEquals(userExpected.getBankAccount(),user.getBankAccount());
+        assertEquals(userExpected.getEmail(),user.getEmail());
+        assertEquals(userExpected.getPassword(),user.getPassword());
+        assertEquals(userExpected.getRoles(),user.getRoles());
 
     }
 }
