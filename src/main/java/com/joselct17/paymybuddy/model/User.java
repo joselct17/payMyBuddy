@@ -51,19 +51,7 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "roles_id"))
     private List<Role> roles;
 
-//CONSTRUCTOR
 
-    public User(Integer id, String firstName, String lastName, String email, String password, String bankAccount, List<BankTransaction> bankTransactions, List<Transaction> transactions, List<Role> roles) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
-        this.bankAccount = bankAccount;
-        this.bankTransactions = bankTransactions;
-        this.transactions = transactions;
-        this.roles = roles;
-    }
 
     //GETTER-SETTER
 
