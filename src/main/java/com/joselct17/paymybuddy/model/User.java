@@ -5,8 +5,8 @@ package com.joselct17.paymybuddy.model;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "user")
@@ -50,7 +50,7 @@ public class User {
             name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "roles_id"))
-    private HashSet<Role> roles;
+    private Set<Role> roles;
 
 
 
@@ -120,11 +120,11 @@ public class User {
         this.transactions = transactions;
     }
 
-    public HashSet<Role> getRoles() {
+    public Set<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(HashSet<Role> roles) {
+    public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
 }
