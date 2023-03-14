@@ -7,7 +7,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 
 @Configuration
-public class SpringSecurityConfig {
+public class SecurityConfiguration {
 
     /**
      * Spring Security needs to have a PasswordEncoder defined.
