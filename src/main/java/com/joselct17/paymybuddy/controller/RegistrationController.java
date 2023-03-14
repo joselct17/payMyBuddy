@@ -50,7 +50,7 @@ public class RegistrationController {
         User user = convertToEntity(userFormDTO);
         iUserService.create(user);
 
-        iSecurityService.autoLogin(userFormDTO.getEmail(), userFormDTO.getPassword());
+        //iSecurityService.autoLogin(userFormDTO.getEmail(), userFormDTO.getPassword());
 
         return "redirect:/";
     }
