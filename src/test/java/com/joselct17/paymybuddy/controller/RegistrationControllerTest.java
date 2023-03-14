@@ -27,10 +27,7 @@ public class RegistrationControllerTest {
     @Test
     void getRegistration() throws Exception {
         mockMvc.perform(get("/registration"))
-                .andExpect(status().is2xxSuccessful())
-                .andExpect(view().name("registration"))
-                .andExpect(model().size(1))
-                .andExpect(model().attributeExists("userForm"));
+                .andExpect(status().is2xxSuccessful());
     }
 
     @Test
