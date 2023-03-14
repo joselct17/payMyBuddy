@@ -3,6 +3,7 @@ package com.joselct17.paymybuddy.controller;
 
 import com.joselct17.paymybuddy.model.User;
 import com.joselct17.paymybuddy.model.dto.UserFormDTO;
+import com.joselct17.paymybuddy.service.interfaces.ISecurityService;
 import com.joselct17.paymybuddy.service.interfaces.IUserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,8 @@ public class RegistrationController {
     @Autowired
     private IUserService iUserService;
 
+    @Autowired
+    private ISecurityService iSecurityService;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -40,8 +43,14 @@ public class RegistrationController {
         if (bindingResult.hasErrors()) {
             return "registration";
         }
+        if ( iUserService.existsByEmail(userFormDTO.getEmail()) ) {
+            bindingResult.rejectValue("email", "", "This email already exists");
+            return "registration";
+        }
         User user = convertToEntity(userFormDTO);
         iUserService.create(user);
+
+        iSecurityService.autoLogin(userFormDTO.getEmail(), userFormDTO.getPassword());
 
         return "redirect:/";
     }
