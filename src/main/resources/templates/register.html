@@ -29,6 +29,15 @@
                         <input type="text" field="*{bankAccount}" id="bank" name="bank" required placeholder="Bank Account">
                     </div>
                     <div class="form-group">
+                        <select field="*{currency}" class="form-control">
+                            <!--/* Accessing directly bean "currenciesAllowed" in Spring application context: */-->
+                            <option
+                                    th:each="entry : ${@currencyPermited.getCurrencyList()}"
+                                    th:value="${entry}" th:text="${entry.getDisplayName()}">
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group">
                         <input type="password" field="*{password}" id="password" name="password" required placeholder="Password">
                     </div>
 
@@ -37,6 +46,7 @@
                   <!--  <span class="has-error" th:if="${#fields.hasErrors('confirmPassword')}"
                         th:errors="*{confirmPassword}"></span> -->
                     </div>
+
 
                     <div class="modal-footer">
                         <input type="submit" value="S'enregistrer">
