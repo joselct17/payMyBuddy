@@ -17,6 +17,14 @@ public class Transaction {
     @Column(name = "transaction_id")
     private Integer id;
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)//child entity, owner of the relationship
+    @JoinColumn(name = "usersource_id", nullable = false)
+    private User userSource;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)//child entity, owner of the relationship
+    @JoinColumn(name = "userdestination_id", nullable = false)
+    private User userDestination;
+
     @Column(name = "dateTime")
     private String dateTime;
 
@@ -57,5 +65,21 @@ public class Transaction {
 
     public void setCurrency(String currency) {
         this.currency = currency;
+    }
+
+    public User getUserSource() {
+        return userSource;
+    }
+
+    public void setUserSource(User userSource) {
+        this.userSource = userSource;
+    }
+
+    public User getUserDestination() {
+        return userDestination;
+    }
+
+    public void setUserDestination(User userDestination) {
+        this.userDestination = userDestination;
     }
 }
