@@ -1,6 +1,7 @@
 package com.joselct17.paymybuddy.controller;
 
 
+import com.joselct17.paymybuddy.config.CurrencyPermited;
 import com.joselct17.paymybuddy.model.User;
 import com.joselct17.paymybuddy.model.dto.UserFormDTO;
 import com.joselct17.paymybuddy.service.interfaces.ISecurityService;
@@ -28,6 +29,9 @@ public class RegistrationController {
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    CurrencyPermited currencyPermited;
+
 
     @GetMapping("/registration")
     public String registration(Model model) {
@@ -45,6 +49,10 @@ public class RegistrationController {
         }
         if ( iUserService.existsByEmail(userFormDTO.getEmail()) ) {
             bindingResult.rejectValue("email", "", "This email already exists");
+            return "registration";
+        }
+        if ( !currencyPermited.getCurrencyList().contains(userFormDTO.getCurrency()) ) {
+            bindingResult.rejectValue("currency", "UnknownCurrency", "This currency is not allowed.");
             return "registration";
         }
         User user = convertToEntity(userFormDTO);
