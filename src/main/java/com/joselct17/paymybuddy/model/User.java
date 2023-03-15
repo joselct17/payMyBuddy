@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
+import java.util.Currency;
 import java.util.List;
 import java.util.Set;
 
@@ -31,6 +32,10 @@ public class User {
     private String password;
     @Column(name = "bankAccount")
     private String bankAccount;
+
+    @Column(name = "currency")
+    private Currency currency;
+
 
 
     @OneToMany(
@@ -131,5 +136,13 @@ public class User {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public Currency getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(Currency currency) {
+        this.currency = currency;
     }
 }
