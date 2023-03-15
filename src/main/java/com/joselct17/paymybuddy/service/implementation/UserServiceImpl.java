@@ -56,6 +56,11 @@ public class UserServiceImpl implements IUserService {
         return iUserRepository.existsByEmail(email);
     }
 
+    @Override
+    public User getCurrentUser() {
+        return null;
+    }
+
 }
 
 
