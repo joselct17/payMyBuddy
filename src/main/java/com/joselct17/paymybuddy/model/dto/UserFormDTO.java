@@ -4,7 +4,7 @@ import com.joselct17.paymybuddy.validation.PasswordEqual;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-
+import java.util.Currency;
 
 
 @PasswordEqual
@@ -22,6 +22,9 @@ public class UserFormDTO {
     private String confirmPassword;
     @NotBlank
     private String bankAccount;
+
+    @NotBlank
+    private Currency currency;
 
 
     public String getFirstName() {
@@ -70,5 +73,13 @@ public class UserFormDTO {
 
     public void setBankAccount(String bankAccount) {
         this.bankAccount = bankAccount;
+    }
+
+    public Currency getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(Currency currency) {
+        this.currency = currency;
     }
 }
