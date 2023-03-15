@@ -15,4 +15,6 @@ public interface IUserService {
 
 
     Boolean existsByEmail(String email);
+
+    User getCurrentUser();
 }
