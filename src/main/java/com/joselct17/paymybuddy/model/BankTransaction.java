@@ -8,6 +8,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+import java.util.Currency;
+
 
 @Entity
 @AllArgsConstructor
@@ -22,11 +25,18 @@ public class BankTransaction {
     @Column(name = "bankTransaction_id")
     private Integer id;
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
     @Column(name = "dateTime")
-    private String dateTime;
+    private LocalDateTime dateTime;
     @Column(name = "amount")
     private Double amount;
     @Column(name = "currency")
-    private String currency;
+    private Currency currency;
+
+    @Column(name = "bankAccount")
+    private String bankAccount;
 
 }
