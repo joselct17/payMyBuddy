@@ -7,4 +7,5 @@ public interface ISecurityService {
     void autoLogin(String username, String password);
 
 
+    public String getCurrentUserDetailsUserName();
 }
