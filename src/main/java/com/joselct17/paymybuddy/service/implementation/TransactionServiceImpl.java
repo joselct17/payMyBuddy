@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 import java.util.Map;
 
 @Service
-public class ITransactionServiceImpl implements ITransactionService {
+public class TransactionServiceImpl implements ITransactionService {
 
     @Autowired
     private IUserService userService;
