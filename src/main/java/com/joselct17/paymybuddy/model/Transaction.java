@@ -4,11 +4,19 @@ package com.joselct17.paymybuddy.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.Currency;
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 @Table(name = "transaction")
 public class Transaction {
 
@@ -26,60 +34,16 @@ public class Transaction {
     private User userDestination;
 
     @Column(name = "dateTime")
-    private String dateTime;
+    private LocalDateTime dateTime;
 
     @Column(name = "amount")
-    private Double amount;
+    private BigDecimal amount;
+
     @Column(name = "currency")
-    private String currency;
+    private Currency currency;
+
+    @Column(name = "fees")
+    private BigDecimal fees;
 
 
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getDateTime() {
-        return dateTime;
-    }
-
-    public void setDateTime(String dateTime) {
-        this.dateTime = dateTime;
-    }
-
-    public Double getAmount() {
-        return amount;
-    }
-
-    public void setAmount(Double amount) {
-        this.amount = amount;
-    }
-
-    public String getCurrency() {
-        return currency;
-    }
-
-    public void setCurrency(String currency) {
-        this.currency = currency;
-    }
-
-    public User getUserSource() {
-        return userSource;
-    }
-
-    public void setUserSource(User userSource) {
-        this.userSource = userSource;
-    }
-
-    public User getUserDestination() {
-        return userDestination;
-    }
-
-    public void setUserDestination(User userDestination) {
-        this.userDestination = userDestination;
-    }
 }
