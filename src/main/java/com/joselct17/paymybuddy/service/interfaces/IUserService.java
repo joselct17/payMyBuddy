@@ -1,6 +1,7 @@
 package com.joselct17.paymybuddy.service.interfaces;
 
 import com.joselct17.paymybuddy.model.User;
+import com.joselct17.paymybuddy.utils.paging.Paged;
 
 public interface IUserService {
 
@@ -17,4 +18,6 @@ public interface IUserService {
     Boolean existsByEmail(String email);
 
     User getCurrentUser();
+
+    Paged<User> getCurrentUserConnectionPage(int pageNumber, int size);
 }
