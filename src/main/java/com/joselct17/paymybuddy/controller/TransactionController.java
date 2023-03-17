@@ -3,18 +3,17 @@ package com.joselct17.paymybuddy.controller;
 import com.joselct17.paymybuddy.model.Transaction;
 import com.joselct17.paymybuddy.model.User;
 import com.joselct17.paymybuddy.model.dto.TransactionFormDTO;
-import com.joselct17.paymybuddy.model.dto.UserFormDTO;
 import com.joselct17.paymybuddy.service.interfaces.ITransactionService;
 import com.joselct17.paymybuddy.service.interfaces.IUserService;
-import jakarta.transaction.UserTransaction;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
-@RestController
+
+@Controller
 public class TransactionController {
 
 
@@ -34,7 +33,6 @@ public class TransactionController {
             @RequestParam(value = "size", required = false, defaultValue = "5") int size,
             Model model) {
 
-
         User user = iUserService.getCurrentUser();
         model.addAttribute("user", user);//needed to display current user amount + currency
         model.addAttribute("paged", iTransactionService.getCurrentUserUserTransactionPage(pageNumber, size));
@@ -42,7 +40,7 @@ public class TransactionController {
         TransactionFormDTO transactionFormDTO = new TransactionFormDTO();
         transactionFormDTO.setCurrency(user.getCurrency()); //sets by default the form currency to currency of the user.
         model.addAttribute("transactionFormDTO",transactionFormDTO);
-        return "transaction";
+        return "userTransaction";
     }
 
 
