@@ -1,8 +1,11 @@
 package com.joselct17.paymybuddy.model.dto;
 
+
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
@@ -10,16 +13,15 @@ import java.util.Currency;
 
 @Getter
 @Setter
-public class TransactionFormDTO {
+public class BankTransactionFormDTO {
 
-    @NotNull
-    private Integer userDestinationId;
+    @NotBlank
+    private String getOrSendRadioOptions;
 
     @NotNull
     @Positive
     private BigDecimal amount;
 
-    @NotNull
-    private Currency currency;
 
+    private Currency currency;
 }
