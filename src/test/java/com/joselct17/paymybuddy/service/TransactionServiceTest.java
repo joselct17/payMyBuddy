@@ -4,7 +4,7 @@ package com.joselct17.paymybuddy.service;
 import com.joselct17.paymybuddy.model.Transaction;
 import com.joselct17.paymybuddy.model.User;
 import com.joselct17.paymybuddy.repository.ITransactionRepository;
-import com.joselct17.paymybuddy.service.implementation.ITransactionServiceImpl;
+import com.joselct17.paymybuddy.service.implementation.TransactionServiceImpl;
 import com.joselct17.paymybuddy.service.interfaces.ILocalDateTimeService;
 import com.joselct17.paymybuddy.service.interfaces.IPagingService;
 import com.joselct17.paymybuddy.service.interfaces.IUserService;
@@ -32,7 +32,7 @@ public class TransactionServiceTest {
     IUserService userService;
 
     @InjectMocks
-    ITransactionServiceImpl transactionService;
+    TransactionServiceImpl transactionService;
 
     @Mock
     IPagingService pagingService;
