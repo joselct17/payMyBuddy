@@ -5,8 +5,13 @@ import com.joselct17.paymybuddy.model.Role;
 import com.joselct17.paymybuddy.model.User;
 import com.joselct17.paymybuddy.repository.IRolesRepository;
 import com.joselct17.paymybuddy.repository.IUserRepository;
+import com.joselct17.paymybuddy.service.interfaces.IPagingService;
 import com.joselct17.paymybuddy.service.interfaces.IUserService;
+import com.joselct17.paymybuddy.utils.paging.Paged;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +27,8 @@ public class UserServiceImpl implements IUserService {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     @Autowired
     IRolesRepository roleRepository;
+    @Autowired
+    private IPagingService iPagingService;
 
 
     @Override
@@ -59,6 +66,13 @@ public class UserServiceImpl implements IUserService {
     @Override
     public User getCurrentUser() {
         return null;
+    }
+
+    @Override
+    public Paged<User> getCurrentUserConnectionPage(int pageNumber, int size) {
+        PageRequest request = PageRequest.of(pageNumber - 1, size, Sort.by(Sort.Direction.DESC, "id"));
+        Page<User> page = iUserRepository.findConnectionById(getCurrentUser().getId(),request);
+        return new Paged<>(page, iPagingService.of(page.getTotalPages(), pageNumber));
     }
 
 }
