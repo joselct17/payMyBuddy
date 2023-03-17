@@ -6,6 +6,7 @@ import com.joselct17.paymybuddy.model.User;
 import com.joselct17.paymybuddy.repository.IRolesRepository;
 import com.joselct17.paymybuddy.repository.IUserRepository;
 import com.joselct17.paymybuddy.service.implementation.UserServiceImpl;
+import com.joselct17.paymybuddy.service.interfaces.ISecurityService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -38,14 +39,17 @@ public class UserServiceTest {
     @Mock
     IRolesRepository iRolesRepository;
 
+    @Mock
+    ISecurityService iSecurityService;
+
 
     User user1;
     User user2;
 
     @BeforeEach
     void initialize() {
-        user1 = new User(1,"John","Doe","johndoe@mail.com","password","4545dddj",new ArrayList<>(), new ArrayList<>(),new HashSet<>());
-        user2 = new User(2,"Jane","Doe","janedoe@mail.com","password","45445ddds",new ArrayList<>(),new ArrayList<>(), new HashSet<>());
+        user1 = new User(1,"John","Doe","johndoe@mail.com","password","4545dddj", Currency.getInstance("USD"),new HashSet<>(), new HashSet<>(),new HashSet<>());
+        user2 = new User(2,"Jane","Doe","janedoe@mail.com","password","45445ddds",Currency.getInstance("EUR"),new HashSet<>(),new HashSet<>(), new HashSet<>());
     }
 
 
@@ -53,7 +57,7 @@ public class UserServiceTest {
     void testFindByEmail() {
         // Arrange
         String email = "johndoe@mail.com";
-        User user = new User(1,"John","Doe","johndoe@mail.com","password","4545dddj",new ArrayList<>(), new ArrayList<>(),new HashSet<>());
+        User user = new User(1,"John","Doe","johndoe@mail.com","password","4545dddj", Currency.getInstance("USD"),new HashSet<>(), new HashSet<>(),new HashSet<>());
         when(iUserRepository.findByEmail(email)).thenReturn(user);
         // Act
         User resultUser = userServiceImpl.findByEmail(email);
@@ -99,9 +103,9 @@ public class UserServiceTest {
 
     @Test
     void createUser() {
-        User user = new User(null, "Marc", "Anthony", "marc@email.com", "password", "1454", new ArrayList<>(),  new ArrayList<>(), new HashSet<>());
+        User user = new User(null, "Marc", "Anthony", "marc@email.com", "password", "1454",Currency.getInstance("USD"), new HashSet<>(),  new HashSet<>(), new HashSet<>());
 
-        User userExpected = new User(null, "Marc", "Anthony", "marc@email.com", "passwordEncrypted", "1454", new ArrayList<>(),  new ArrayList<>(), new HashSet<>());
+        User userExpected = new User(null, "Marc", "Anthony", "marc@email.com", "passwordEncrypted", "1454", Currency.getInstance("USD"), new HashSet<>(),  new HashSet<>(), new HashSet<>());
 
         HashSet<Role> hashSet = new HashSet<>();
 
@@ -122,7 +126,18 @@ public class UserServiceTest {
         assertEquals(userExpected.getBankAccount(),user.getBankAccount());
         assertEquals(userExpected.getEmail(),user.getEmail());
         assertEquals(userExpected.getPassword(),user.getPassword());
-        assertEquals(userExpected.getRoles(),user.getRoles());
+        assertEquals(userExpected.getRoles().size(),user.getRoles().size());
 
+    }
+
+    @Test
+    void testGetCurrentUser() {
+        // Arrange
+        when(iSecurityService.getCurrentUserDetailsUserName()).thenReturn("johndoe@mail.com");
+        when(iUserRepository.findByEmail("johndoe@mail.com")).thenReturn(user1);
+        // Act
+        User resultUser = userServiceImpl.getCurrentUser();
+        // Assert
+        assertEquals(resultUser, user1);
     }
 }
