@@ -49,16 +49,15 @@ public class RegistrationController {
         }
         if ( iUserService.existsByEmail(userFormDTO.getEmail()) ) {
             bindingResult.rejectValue("email", "", "This email already exists");
-            return "registration";
+            return "registration exist email";
         }
-        if ( !currencyPermited.getCurrencyList().contains(userFormDTO.getCurrency()) ) {
+       /* if ( !currencyPermited.getCurrencyList().contains(userFormDTO.getCurrency()) ) {
             bindingResult.rejectValue("currency", "UnknownCurrency", "This currency is not allowed.");
-            return "registration";
-        }
+            return "registration problem currency";
+        }*/
         User user = convertToEntity(userFormDTO);
         iUserService.create(user);
 
-        //iSecurityService.autoLogin(userFormDTO.getEmail(), userFormDTO.getPassword());
 
         return "redirect:/";
     }
