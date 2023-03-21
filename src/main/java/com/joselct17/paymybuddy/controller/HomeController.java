@@ -12,7 +12,7 @@ public class HomeController {
     Logger logger = LoggerFactory.getLogger(HomeController.class);
 
 
-    @GetMapping("/home")
+    @GetMapping("/")
     public String indexPage() {
         logger.info("GET: /" );
         return "index";
