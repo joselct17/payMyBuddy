@@ -17,7 +17,7 @@ margin:auto;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 70vh;
+  height: 55vh;
 }
 
 .cards {
@@ -53,7 +53,17 @@ input[type="submit"] {
 }
 
 
+
 .cards {
 margin-bottom:50px;
+}
+
+.container-transaction {
+height:20vh;
+background-color:#F5F5F5;
+}
+
+thead {
+background-color: #74D36A;
 }
 
