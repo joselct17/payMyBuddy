@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Currency;
 import java.util.List;
@@ -40,6 +41,9 @@ public class User {
     @Column(name = "currency")
     private Currency currency;
 
+    @Column(name = "amount")
+    private BigDecimal amount;
+
 
 
     @OneToMany(
@@ -64,6 +68,13 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "roles_id"))
     private Set<Role> roles;
+
+    @ManyToMany //FetchType.LAZY by default
+    @JoinTable(
+            name = "user_connections",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "connection_id"))
+    private Set<User> connections;
 
 
 }
