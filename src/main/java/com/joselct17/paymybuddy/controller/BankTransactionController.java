@@ -18,6 +18,6 @@ public class BankTransactionController {
     @GetMapping("/banktransaction")
     public String bankTransaction() {
         logger.info("GET: /banktransaction" );
-        return "banktransaction";
+        return "bank";
     }
 }
