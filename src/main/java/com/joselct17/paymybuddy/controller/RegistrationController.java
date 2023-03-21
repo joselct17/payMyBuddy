@@ -60,7 +60,7 @@ public class RegistrationController {
         iUserService.create(user);
 
 
-        return "redirect:/banktransaction";
+        return "redirect:/";
     }
 
 
