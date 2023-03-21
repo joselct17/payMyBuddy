@@ -45,5 +45,8 @@ public class Transaction {
     @Column(name = "fees")
     private BigDecimal fees;
 
+    @Column(name = "description")
+    private String description;
+
 
 }
