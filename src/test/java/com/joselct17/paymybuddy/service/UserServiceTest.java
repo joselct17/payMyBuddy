@@ -48,8 +48,8 @@ public class UserServiceTest {
 
     @BeforeEach
     void initialize() {
-        user1 = new User(1,"John","Doe","johndoe@mail.com","password","4545dddj", Currency.getInstance("USD"),new HashSet<>(), new HashSet<>(),new HashSet<>());
-        user2 = new User(2,"Jane","Doe","janedoe@mail.com","password","45445ddds",Currency.getInstance("EUR"),new HashSet<>(),new HashSet<>(), new HashSet<>());
+        user1 = new User(1,"John","Doe","johndoe@mail.com","password","4545dddj", Currency.getInstance("USD"), new BigDecimal(100),new HashSet<>(), new HashSet<>(),new HashSet<>(), new HashSet<>());
+        user2 = new User(2,"Jane","Doe","janedoe@mail.com","password","45445ddds",Currency.getInstance("EUR"),new BigDecimal(200),new HashSet<>(),new HashSet<>(), new HashSet<>(), new HashSet<>());
     }
 
 
@@ -57,7 +57,7 @@ public class UserServiceTest {
     void testFindByEmail() {
         // Arrange
         String email = "johndoe@mail.com";
-        User user = new User(1,"John","Doe","johndoe@mail.com","password","4545dddj", Currency.getInstance("USD"),new HashSet<>(), new HashSet<>(),new HashSet<>());
+        User user = new User(1,"John","Doe","johndoe@mail.com","password","4545dddj", Currency.getInstance("USD"), new BigDecimal(100),new HashSet<>(),  new HashSet<>(),new HashSet<>(), new HashSet<>());
         when(iUserRepository.findByEmail(email)).thenReturn(user);
         // Act
         User resultUser = userServiceImpl.findByEmail(email);
@@ -103,9 +103,9 @@ public class UserServiceTest {
 
     @Test
     void createUser() {
-        User user = new User(null, "Marc", "Anthony", "marc@email.com", "password", "1454",Currency.getInstance("USD"), new HashSet<>(),  new HashSet<>(), new HashSet<>());
+        User user = new User(null, "Marc", "Anthony", "marc@email.com", "password", "1454",Currency.getInstance("USD"),new BigDecimal(100), new HashSet<>(),  new HashSet<>(), new HashSet<>(), new HashSet<>());
 
-        User userExpected = new User(null, "Marc", "Anthony", "marc@email.com", "passwordEncrypted", "1454", Currency.getInstance("USD"), new HashSet<>(),  new HashSet<>(), new HashSet<>());
+        User userExpected = new User(null, "Marc", "Anthony", "marc@email.com", "passwordEncrypted", "1454", Currency.getInstance("USD"),new BigDecimal(200),new HashSet<>(),  new HashSet<>(), new HashSet<>(), new HashSet<>());
 
         HashSet<Role> hashSet = new HashSet<>();
 
