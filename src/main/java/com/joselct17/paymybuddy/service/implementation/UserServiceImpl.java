@@ -7,6 +7,7 @@ import com.joselct17.paymybuddy.repository.IRolesRepository;
 import com.joselct17.paymybuddy.repository.IUserRepository;
 import com.joselct17.paymybuddy.service.interfaces.ICalculationService;
 import com.joselct17.paymybuddy.service.interfaces.IPagingService;
+import com.joselct17.paymybuddy.service.interfaces.ISecurityService;
 import com.joselct17.paymybuddy.service.interfaces.IUserService;
 import com.joselct17.paymybuddy.utils.paging.Paged;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,9 @@ public class UserServiceImpl implements IUserService {
     IRolesRepository roleRepository;
     @Autowired
     private IPagingService iPagingService;
+
+    @Autowired
+    private ISecurityService securityService;
 
     @Autowired
     private ICalculationService calculationService;
@@ -77,7 +81,7 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public User getCurrentUser() {
-        return null;
+        return findByEmail(securityService.getCurrentUserDetailsUserName());
     }
 
     @Override
