@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import java.math.BigDecimal;
 import java.util.Currency;
 
 
@@ -28,5 +29,7 @@ public class UserFormDTO {
     private String bankAccount;
     @NotBlank
     private Currency currency;
+    @NotBlank
+    private BigDecimal amount;
 
 }
