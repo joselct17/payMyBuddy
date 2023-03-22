@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Currency;
 import java.util.HashSet;
@@ -43,9 +44,9 @@ public class ConnectionControllerTest {
 
     @BeforeEach
     void setup() {
-        user1 = new User(1, "firstname1", "lastname1", "user1e@mail.com","password1", "1AX256", Currency.getInstance("USD"),  new HashSet<>(), new HashSet<>(), new HashSet<>() );
-        user2 = new User(2, "firstname2", "lastname2", "user2e@mail.com", "password2",  "1AX256", Currency.getInstance("USD"), new HashSet<>(), new HashSet<>(), new HashSet<>() );
-        user3 = new User(3, "firstname3", "lastname3", "user3e@mail.com","password3", "1AX256", Currency.getInstance("USD"),  new HashSet<>(), new HashSet<>(), new HashSet<>() );
+        user1 = new User(1, "firstname1", "lastname1", "user1e@mail.com","password1", "1AX256", Currency.getInstance("USD"), new BigDecimal(100), new HashSet<>(), new HashSet<>(), new HashSet<>() ,new HashSet<>());
+        user2 = new User(2, "firstname2", "lastname2", "user2e@mail.com", "password2",  "1AX256", Currency.getInstance("USD"), new BigDecimal(100),new HashSet<>() ,new HashSet<>(), new HashSet<>(), new HashSet<>() );
+        user3 = new User(3, "firstname3", "lastname3", "user3e@mail.com","password3", "1AX256", Currency.getInstance("USD"), new BigDecimal(100), new HashSet<>() ,new HashSet<>(), new HashSet<>(), new HashSet<>() );
 
         User[] userArray = {user1,user2,user3};
         List<User> users = Arrays.asList(userArray);
