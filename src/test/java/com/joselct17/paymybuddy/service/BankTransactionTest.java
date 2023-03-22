@@ -4,7 +4,7 @@ package com.joselct17.paymybuddy.service;
 import com.joselct17.paymybuddy.model.BankTransaction;
 import com.joselct17.paymybuddy.model.User;
 import com.joselct17.paymybuddy.repository.IBankTransactionRepository;
-import com.joselct17.paymybuddy.service.implementation.BankTransactionServicenImpl;
+import com.joselct17.paymybuddy.service.implementation.BankTransactionServiceImpl;
 import com.joselct17.paymybuddy.service.implementation.LocalDateTimeServiceImpl;
 import com.joselct17.paymybuddy.service.interfaces.IUserService;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,7 +34,7 @@ public class BankTransactionTest {
     IUserService userService;
 
     @InjectMocks
-    BankTransactionServicenImpl bankTransactionServiceImpl;
+    BankTransactionServiceImpl bankTransactionServiceImpl;
 
     @Mock
     IBankTransactionRepository bankTransactionRepository;
@@ -49,7 +49,7 @@ public class BankTransactionTest {
     @BeforeEach
     void initialize() {
         now = LocalDateTime.of(2019, Month.MARCH, 28, 14, 33, 48);
-        user1 = new User(1, "John", "Doe", "john@doe.com", "password", "XA5662AS", Currency.getInstance("EUR"), new HashSet<>(), new HashSet<>(), new HashSet<>());
+        user1 = new User(1, "John", "Doe", "john@doe.com", "password", "XA5662AS", Currency.getInstance("EUR"), new BigDecimal(100), new HashSet<>(),new HashSet<>(), new HashSet<>(), new HashSet<>());
 
         bankTransaction1 = new BankTransaction(50, user1,  now,new Double(1000), Currency.getInstance("USD"), "XA5445");
     }
