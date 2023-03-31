@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Bank Transaction</title>
@@ -10,48 +10,46 @@
 
 <div th:replace="~{common/header.html :: navigation}"></div>
 
+<!--<h1 th:each="name : ${name}" th:text="${name}"></h1>-->
+<h1><span sec:authentication="principal.username"/></h1>
 <div class="row">
   <div class="col-8">
     <h4>Send Money</h4>
   </div>
   <div class="col">
-    <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addConnectionModal" href="#">Add Connection</a>
+    <a class="btn btn-primary"  href="/connection">Add Connection</a>
   </div>
 
 </div>
 
-
-<div class="modal fade" id="addConnectionModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2 class="modal-title fs-5" id="exampleModalLabel">Add a Connection</h2>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-
-      <div class="modal-body">
-        <div class="list-group" th:each="user : ${allUsers}">
-          <a href="#" th:text="${user.email}" class="list-group-item list-group-item-action"></a>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</div>
 
 <div class="container container-transaction">
       <form class="row g-4" method="POST" th:object="${transactionForm}" th:action="@{/usertransaction}">
         <div class="col-auto">
-          <select class="form-control" id="select">
-            <option>Select a Connection</option>
-            <option></option>
+          <select th:field="*{userDestinationId}" class="form-control">
+            <option value="0">Select a Connection</option>
+            <option
+                    th:each="entry : ${user.getConnections()}"
+                    th:value="${entry.getId}"
+                    th:text="${entry.getEmail()}">
+            </option>
           </select>
         </div>
         <div class="col-auto">
-          <input type="text" field="*{description}" class="form-control" id="inputText" placeholder="Enter text">
+          <input type="text"  id="description" name="description" field="*{description}" class="form-control" placeholder="Enter text">
         </div>
         <div class="col-auto">
-          <input type="number" field="*{amount}" class="form-control" id="inputNumber" placeholder="Enter number">
+          <input type="number" id="amount" name="amount" class="form-control"  placeholder="Enter number">
+          <span class="has-error" th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}"></span>
+        </div>
+        <div class="col-auto">
+          <select th:field="*{currency}" class="form-control">
+            <!--/* Accessing directly bean "currenciesAllowed" in Spring application context: */-->
+            <option
+                    th:each="currency : ${@currencyPermited.getCurrencyList()}"
+                    th:value="${currency}" th:text="${currency}">
+            </option>
+          </select>
         </div>
         <div class="col-auto">
           <button type="submit" class="btn btn-primary">Pay</button>
@@ -65,30 +63,28 @@
 <table class="table table-hover">
   <h4>My Transactions</h4>
   <thead>
-
   <tr>
-    <th scope="col">Connections</th>
-    <th scope="col">Description</th>
-    <th scope="col">Amount</th>
+    <th class="text-left">From</th>
+    <th class="text-left">To</th>
+    <th class="text-left">Description</th>
+    <th class="text-left">Date</th>
+    <th class="text-left">value</th>
+    <th class="text-left">Fees</th>
+    <th class="text-left">Currency</th>
   </tr>
   </thead>
   <tbody>
-  <tr class="table-active">
-    <th scope="row">Hayley</th>
-    <td>Restaurant bill share</td>
-    <td>10$</td>
+  <tbody>
+  <tr th:each="page : ${paged.page}">
+    <td th:text="${page.userSource.email}"></td>
+    <td th:text="${page.userDestination.email}"></td>
+    <td th:text="${page.description}"></td>
+    <td th:text="${page.datetime}"></td>
+    <td th:text="${page.amount}"></td>
+    <td th:text="${page.fees}"></td>
+    <td th:text="${page.currency}"></td>
   </tr>
-  <tr class="table-active">
-    <th scope="row">Clara</th>
-    <td>Trip money</td>
-    <td>25$</td>
-  </tr>
-  <tr class="table-active">
-    <th scope="row">Smith</th>
-    <td>Movie tickets</td>
-    <td>8$</td>
-  </tr>
-
+  </tbody>
   </tbody>
 </table>
 
