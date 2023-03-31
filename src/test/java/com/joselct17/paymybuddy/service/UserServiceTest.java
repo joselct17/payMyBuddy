@@ -109,11 +109,11 @@ public class UserServiceTest {
 
         HashSet<Role> hashSet = new HashSet<>();
 
-        hashSet.add(new Role(1, "USER"));
+        hashSet.add(new Role(1, "USER", new ArrayList<>()));
         userExpected.setRoles(hashSet);
 
         when(bCryptPasswordEncoder.encode("password")).thenReturn("passwordEncrypted");
-        when(iRolesRepository.findByroleName("USER")).thenReturn(new Role(1, "USER"));
+        when(iRolesRepository.findByroleName("USER")).thenReturn(new Role(1, "USER", new ArrayList<>()));
 
 
         userServiceImpl.create(user);
