@@ -9,6 +9,7 @@ import com.joselct17.paymybuddy.service.interfaces.ICalculationService;
 import com.joselct17.paymybuddy.service.interfaces.IPagingService;
 import com.joselct17.paymybuddy.service.interfaces.ISecurityService;
 import com.joselct17.paymybuddy.service.interfaces.IUserService;
+import com.joselct17.paymybuddy.util.TbConstants;
 import com.joselct17.paymybuddy.utils.paging.Paged;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,10 +19,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.Currency;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class UserServiceImpl implements IUserService {
@@ -41,6 +39,9 @@ public class UserServiceImpl implements IUserService {
     @Autowired
     private ICalculationService calculationService;
 
+    @Autowired
+    private CostumDetailsService costumDetailsService;
+
 
     @Override
     public Iterable<User> findAll() {
@@ -49,11 +50,15 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public void create(User user) {
+
+        Role role = roleRepository.findByroleName(TbConstants.Roles.USER);
+
+
         String encryptedPassword = bCryptPasswordEncoder.encode(user.getPassword());
         user.setPassword(encryptedPassword);
 
-        HashSet<Role> hashSetRoleUser = new HashSet<>();
-        hashSetRoleUser.add(roleRepository.findByroleName("USER"));
+        List<Role> hashSetRoleUser = new ArrayList<>();
+        hashSetRoleUser.add(roleRepository.findByroleName(TbConstants.Roles.USER));
         user.setRoles(hashSetRoleUser);
 
         iUserRepository.save(user);
@@ -99,6 +104,11 @@ public class UserServiceImpl implements IUserService {
 
         return resultAmount;
 
+    }
+
+    @Override
+    public void update(User user) {
+        iUserRepository.save(user);
     }
 
 }
