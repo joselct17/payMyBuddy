@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -24,14 +24,17 @@
         <li class="nav-item">
           <a class="nav-link" href="#">Contact</a>
         </li>
-        <li class="nav-item">
+
+        <li sec:authorize="isAnonymous()" class="nav-item">
           <a class="nav-link" data-bs-toggle="modal" data-bs-target="#loginModal"  href="#">Login</a>
         </li>
-        <li class="nav-item">
+        <li sec:authorize="isAnonymous()" class="nav-item">
           <a class="nav-link" data-bs-toggle="modal" data-bs-target="#registerModal" href="#">Register</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Log off</a>
+        <li sec:authorize="isAuthenticated()" class="nav-item">
+          <form th:action="@{/logout}" method="post">
+              <input type="submit" value="Sign Out"/>
+          </form>
         </li>
       </ul>
     </div>
