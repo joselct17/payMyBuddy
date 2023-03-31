@@ -22,4 +22,7 @@ public class TransactionFormDTO {
     @NotNull
     private Currency currency;
 
+    @NotNull
+    private String description;
+
 }
