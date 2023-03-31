@@ -10,13 +10,22 @@ import com.joselct17.paymybuddy.service.interfaces.IUserService;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.RestTemplate;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
@@ -43,6 +52,49 @@ public class TransactionController {
     @Autowired
     private ICalculationService calculationService;
 
+    @Autowired
+    private OAuth2AuthorizedClientService authorizedClientService;
+
+
+//    @GetMapping("/usertransaction")
+//    public String getUsertransaction(
+//            @RequestParam(value = "pageNumber", required = false, defaultValue = "1") int pageNumber,
+//            @RequestParam(value = "size", required = false, defaultValue = "5") int size,
+//            Model model,
+//            OAuth2AuthenticationToken authentication) {
+//
+//        User user = iUserService.getCurrentUser();
+//        model.addAttribute("user", user);//needed to display current user amount + currency
+//        model.addAttribute("paged", iTransactionService.getCurrentUserUserTransactionPage(pageNumber, size));
+//       // model.addAttribute("userEmail", iUserService.findByEmail(user.getEmail()));
+//
+//        TransactionFormDTO transactionFormDTO = new TransactionFormDTO();
+//        //transactionFormDTO.setCurrency(user.getCurrency()); //sets by default the form currency to currency of the user.
+//        model.addAttribute("transactionForm",transactionFormDTO);
+//
+//        OAuth2AuthorizedClient client = authorizedClientService
+//                .loadAuthorizedClient(
+//                        authentication.getAuthorizedClientRegistrationId(),
+//                        authentication.getName());
+//
+//        String userInfoEndpointUri = client.getClientRegistration()
+//                .getProviderDetails().getUserInfoEndpoint().getUri();
+//
+//        if (!StringUtils.isEmpty(userInfoEndpointUri)) {
+//            RestTemplate restTemplate = new RestTemplate();
+//            HttpHeaders headers = new HttpHeaders();
+//            headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + client.getAccessToken()
+//                    .getTokenValue());
+//            HttpEntity entity = new HttpEntity("", headers);
+//            ResponseEntity<Map> response = restTemplate
+//                    .exchange(userInfoEndpointUri, HttpMethod.GET, entity, Map.class);
+//            Map userAttributes = response.getBody();
+//            model.addAttribute("name", userAttributes.get("name"));
+//        }
+//
+//        return "transaction";
+//    }
+
 
     @GetMapping("/usertransaction")
     public String getUsertransaction(
@@ -50,17 +102,17 @@ public class TransactionController {
             @RequestParam(value = "size", required = false, defaultValue = "5") int size,
             Model model) {
 
+
         User user = iUserService.getCurrentUser();
         model.addAttribute("user", user);//needed to display current user amount + currency
         model.addAttribute("paged", iTransactionService.getCurrentUserUserTransactionPage(pageNumber, size));
-        model.addAttribute("allUsers", iUserService.findAll());
 
-        TransactionFormDTO transactionFormDTO = new TransactionFormDTO();
-        //transactionFormDTO.setCurrency(user.getCurrency()); //sets by default the form currency to currency of the user.
-        model.addAttribute("transactionFormDTO",transactionFormDTO);
-
+        TransactionFormDTO userTransactionFormDTO = new TransactionFormDTO();
+        //userTransactionFormDTO.setCurrency(user.getCurrency()); //sets by default the form currency to currency of the user.
+        model.addAttribute("transactionForm",userTransactionFormDTO);
         return "transaction";
     }
+
 
     @Transactional
     @PostMapping("/usertransaction")
@@ -73,7 +125,7 @@ public class TransactionController {
         model.addAttribute("paged", iTransactionService.getCurrentUserUserTransactionPage(1,5));
 
         if (bindingResult.hasErrors()) {
-            return "usertransaction";
+            return "transaction";
         }
 
         User userDestination = iUserService.findById(transactionFormDTO.getUserDestinationId());
@@ -81,12 +133,12 @@ public class TransactionController {
 
         if (!userSource.getConnections().contains(userDestination)) {
             bindingResult.rejectValue("userDestinationId", "userDestinationNotABuddy", "Please select a buddy !");
-            return "usertransaction";
+            return "transaction";
         }
 
         if (!currencyPermited.getCurrencyList().contains(transactionFormDTO.getCurrency())) {
             bindingResult.rejectValue("currency", "NotAllowedCurrency", "This currency is not permitted");
-            return "usertransaction";
+            return "transaction";
         }
 
         //Calculate fees:
@@ -115,7 +167,7 @@ public class TransactionController {
 
         }catch (Exception e) {
             bindingResult.rejectValue("amount",  e.getMessage());
-            return "usertransaction";
+            return "transaction";
         }
 
         //update users amounts:
