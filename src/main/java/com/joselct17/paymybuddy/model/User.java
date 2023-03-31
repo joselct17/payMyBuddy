@@ -8,7 +8,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Currency;
 import java.util.List;
@@ -44,6 +46,12 @@ public class User {
     @Column(name = "amount")
     private BigDecimal amount;
 
+    @NotNull
+    private Boolean enabled;
+
+    @GeneratedValue
+    private LocalDateTime dateTimeInscription;
+
 
 
     @OneToMany(
@@ -62,12 +70,12 @@ public class User {
     Set<Transaction> transactions;
 
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
             name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "roles_id"))
-    private Set<Role> roles;
+    private List<Role> roles = new ArrayList<>();
 
     @ManyToMany //FetchType.LAZY by default
     @JoinTable(
