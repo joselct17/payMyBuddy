@@ -28,4 +28,6 @@ public interface IUserService {
     Paged<User> getCurrentUserConnectionPage(int pageNumber, int size);
 
     BigDecimal sumAmountCalculate(User userSource, BigDecimal negate, Currency currency);
+
+    void update(User user);
 }
