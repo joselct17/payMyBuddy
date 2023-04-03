@@ -22,7 +22,6 @@ public class Transaction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "transaction_id")
     private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)//child entity, owner of the relationship
