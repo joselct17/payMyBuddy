@@ -5,10 +5,7 @@ import com.joselct17.paymybuddy.model.Role;
 import com.joselct17.paymybuddy.model.User;
 import com.joselct17.paymybuddy.repository.IRolesRepository;
 import com.joselct17.paymybuddy.repository.IUserRepository;
-import com.joselct17.paymybuddy.service.interfaces.ICalculationService;
-import com.joselct17.paymybuddy.service.interfaces.IPagingService;
-import com.joselct17.paymybuddy.service.interfaces.ISecurityService;
-import com.joselct17.paymybuddy.service.interfaces.IUserService;
+import com.joselct17.paymybuddy.service.interfaces.*;
 import com.joselct17.paymybuddy.util.TbConstants;
 import com.joselct17.paymybuddy.utils.paging.Paged;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +31,9 @@ public class UserServiceImpl implements IUserService {
     private IPagingService iPagingService;
 
     @Autowired
+    private ILocalDateTimeService localDateTimeService;
+
+    @Autowired
     private ISecurityService securityService;
 
     @Autowired
@@ -53,7 +53,7 @@ public class UserServiceImpl implements IUserService {
 
         Role role = roleRepository.findByroleName(TbConstants.Roles.USER);
 
-
+        user.setDateTimeInscription(localDateTimeService.now());
         String encryptedPassword = bCryptPasswordEncoder.encode(user.getPassword());
         user.setPassword(encryptedPassword);
 
