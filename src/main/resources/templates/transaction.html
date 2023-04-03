@@ -89,31 +89,35 @@
 </table>
 
 
-<div>
-  <ul class="pagination justify-content-center">
-    <li class="page-item disabled">
-      <a class="page-link" href="#">&laquo;</a>
+<!-- PAGED -->
+<nav aria-label="Page navigation" class="paging" th:fragment="paged">
+  <ul class="pagination justify-content-center" th:if="${paged.page.totalPages > 1}">
+    <li class="page-item"
+        th:classappend="${!paged.paging.isPrevEnabled()? 'disabled' : ''}">
+      <a class="page-link"
+         th:href="@{'?pageNumber=' + ${paged.paging.pageNumber - 1}}"
+         tabindex="-1">Previous</a>
     </li>
-    <li class="page-item active">
-      <a class="page-link" href="#">1</a>
-    </li>
-    <li class="page-item">
-      <a class="page-link" href="#">2</a>
-    </li>
-    <li class="page-item">
-      <a class="page-link" href="#">3</a>
-    </li>
-    <li class="page-item">
-      <a class="page-link" href="#">4</a>
-    </li>
-    <li class="page-item">
-      <a class="page-link" href="#">5</a>
-    </li>
-    <li class="page-item">
-      <a class="page-link" href="#">&raquo;</a>
+    <th:block th:each="item : ${paged.paging.getItems()}">
+      <li class="page-item"
+          th:classappend="${item.index == paged.paging.pageNumber? 'active' : ''}"
+          th:if="${item.pageItemType.name() == 'PAGE'}">
+        <a class="page-link"
+           th:href="@{'?pageNumber=' + ${item.index}}"
+           th:text="${item.index}">
+        </a>
+      </li>
+      <li class="page-item disabled"
+          th:if="${item.pageItemType.name() == 'DOTS'}"><a
+              class="page-link" href="#">...</a></li>
+    </th:block>
+    <li class="page-item"
+        th:classappend="${!paged.paging.isNextEnabled()? 'disabled' : ''}">
+      <a class="page-link"
+         th:href="@{'?pageNumber=' + ${paged.paging.pageNumber + 1}}">Next</a>
     </li>
   </ul>
-</div>
+</nav>
 
   <!-- FOOTER -->
   <div th:replace="~{common/footer.html :: footer}"></div>
