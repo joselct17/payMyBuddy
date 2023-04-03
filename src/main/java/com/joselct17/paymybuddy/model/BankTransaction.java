@@ -23,7 +23,6 @@ public class BankTransaction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "bankTransaction_id")
     private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
