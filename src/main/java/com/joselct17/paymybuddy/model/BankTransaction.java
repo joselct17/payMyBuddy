@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Currency;
 
@@ -31,8 +32,10 @@ public class BankTransaction {
 
     @Column(name = "dateTime")
     private LocalDateTime dateTime;
+
     @Column(name = "amount")
-    private Double amount;
+    private BigDecimal amount;
+
     @Column(name = "currency")
     private Currency currency;
 
