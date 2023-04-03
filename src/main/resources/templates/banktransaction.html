@@ -1,10 +1,91 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
 
+<!-- Navigation -->
+<div th:replace="~{common/header.html :: navigation}"></div>
+
+<div class="container">
+    <form method="POST" th:object="${banktransactionFormDTO}"
+          th:action="@{/banktransaction}">
+        <div class="form-row my-3">
+            <div class="col-12 col-md-6 col-lg-4 h5">
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <label class="btn btn-secondary active"> <input
+                            type="radio" th:field="*{getOrSendRadioOptions}" id="option1"
+                            autocomplete="off" value="get"> Get Money from your Bank
+                    </label> <label class="btn btn-secondary"> <input type="radio"
+                                                                      th:field="*{getOrSendRadioOptions}" id="option2"
+                                                                      autocomplete="off" value="send"> Send Money to your Bank
+                </label>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-8 h5 text-right">
+                <div
+                        th:text="'Your account value: '+ ${user.amount}+ ' ' +${user.currency}"></div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-6 col-md-4 col-lg-3">
+                <input th:field="*{amount}" type="number" step="0.01"
+                       class="form-control" placeholder="Enter money amount"
+                       autofocus="true"> <span class="has-error"
+                                               th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}"></span>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3">
+                <select th:field="*{currency}" class="form-control">
+                    <!--/* Accessing directly bean "currenciesAllowed" in Spring application context: */-->
+                    <option
+                            th:each="entry : ${@currencyPermited.getCurrencyList()}"
+                            th:value="${entry}" th:text="${entry}">
+                    </option>
+                </select> <span class="has-error" th:if="${#fields.hasErrors('currency')}"
+                                th:errors="*{currency}"></span>
+            </div>
+            <div class="col-12 col-md-4 col-lg-3">
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="container">
+    <h4 class="mt-4">Transactions history:</h4>
+    <table class="table">
+        <thead class="thead-light">
+        <tr>
+            <th class="text-left">Bank Account</th>
+            <th class="text-left">Date</th>
+            <th class="text-left">value</th>
+            <th class="text-left">Currency</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="page : ${paged.page}">
+            <td th:text="${page.bankaccountnumber}"></td>
+            <td th:text="${page.datetime}"></td>
+            <td th:classappend="${page.amount &gt; 0} ? text-success : text-danger"
+                th:text="${page.amount}">
+            </td>
+            <td th:text="${page.currency}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+
+<!-- FOOTER -->
+<div th:replace="~{common/footer.html :: footer}"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
 </body>
+
+
 </html>
