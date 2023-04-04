@@ -2,6 +2,7 @@ package com.joselct17.paymybuddy.controller;
 
 import com.joselct17.paymybuddy.model.User;
 import com.joselct17.paymybuddy.service.implementation.CostumDetailsService;
+import com.joselct17.paymybuddy.service.interfaces.ITransactionService;
 import com.joselct17.paymybuddy.service.interfaces.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -54,7 +55,7 @@ public class ConnectionController {
         iUserService.update(user);
 
         model.addAttribute("paged", iUserService.getCurrentUserConnectionPage(1, 5));
-        return "connection";
+        return "redirect:/usertransaction";
     }
 
     @PostMapping("/connectionDelete")
