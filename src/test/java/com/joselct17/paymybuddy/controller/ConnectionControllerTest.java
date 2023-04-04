@@ -19,10 +19,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 
 import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.Currency;
-import java.util.HashSet;
-import java.util.List;
+import java.time.LocalDateTime;
+import java.util.*;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -44,9 +42,9 @@ public class ConnectionControllerTest {
 
     @BeforeEach
     void setup() {
-        user1 = new User(1, "firstname1", "lastname1", "user1e@mail.com","password1", "1AX256", Currency.getInstance("USD"), new BigDecimal(100), new HashSet<>(), new HashSet<>(), new HashSet<>() ,new HashSet<>());
-        user2 = new User(2, "firstname2", "lastname2", "user2e@mail.com", "password2",  "1AX256", Currency.getInstance("USD"), new BigDecimal(100),new HashSet<>() ,new HashSet<>(), new HashSet<>(), new HashSet<>() );
-        user3 = new User(3, "firstname3", "lastname3", "user3e@mail.com","password3", "1AX256", Currency.getInstance("USD"), new BigDecimal(100), new HashSet<>() ,new HashSet<>(), new HashSet<>(), new HashSet<>() );
+        user1 = new User(1, "firstname1", "lastname1", "user1e@mail.com","password1", "1AX256", Currency.getInstance("USD"), new BigDecimal(100), true, LocalDateTime.of(2023,01,05,01,00,50), new HashSet<>(), new HashSet<>(), new ArrayList<>() ,new HashSet<>());
+        user2 = new User(2, "firstname2", "lastname2", "user2e@mail.com", "password2",  "1AX256", Currency.getInstance("USD"), new BigDecimal(100), true, LocalDateTime.of(2023,01,05,01,00,50),new HashSet<>() ,new HashSet<>(), new ArrayList<>(), new HashSet<>() );
+        user3 = new User(3, "firstname3", "lastname3", "user3e@mail.com","password3", "1AX256", Currency.getInstance("USD"), new BigDecimal(100), true, LocalDateTime.of(2023,01,05,01,00,50), new HashSet<>() ,new HashSet<>(),  new ArrayList<>(), new HashSet<>() );
 
         User[] userArray = {user1,user2,user3};
         List<User> users = Arrays.asList(userArray);
@@ -57,7 +55,7 @@ public class ConnectionControllerTest {
 
     }
 
-    @WithUserDetails("user@company.com") //user from SpringSecurityWebTestConfig.class
+    @WithUserDetails("test@test.com") //user from SpringSecurityWebTestConfig.class
     @Test
     void GetConnectionPage_shouldSucceed() throws Exception {
         //ARRANGE:
