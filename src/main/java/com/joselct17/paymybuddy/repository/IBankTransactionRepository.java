@@ -13,8 +13,8 @@ public interface IBankTransactionRepository extends CrudRepository<BankTransacti
 
     @Query(value =
             "SELECT * "
-                    + "FROM banktransaction t "
-                    + "WHERE t.user_id = :userid",
+                    + "FROM banktransaction  "
+                    + "WHERE user_id = :userid",
             nativeQuery = true)
     public Page<BankTransaction> findBankTransactionByUserId(@Param("userid") int userid, Pageable pageRequest);
 }
