@@ -1,5 +1,7 @@
 package com.joselct17.paymybuddy.controller;
 
+import com.joselct17.paymybuddy.config.CurrencyPermited;
+import com.joselct17.paymybuddy.exceptions.UserAmountException;
 import com.joselct17.paymybuddy.model.BankTransaction;
 import com.joselct17.paymybuddy.model.User;
 import com.joselct17.paymybuddy.model.dto.BankTransactionFormDTO;
@@ -10,11 +12,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Optional;
 
@@ -32,6 +36,9 @@ public class BankTransactionController {
 
     @Autowired
     IBankTransactionService bankTransactionService;
+
+    @Autowired
+    private CurrencyPermited currencyPermited;
 
     Logger logger = LoggerFactory.getLogger(BankTransactionController.class);
 
@@ -51,6 +58,46 @@ public class BankTransactionController {
         bankTransactionFormDTO.setGetOrSendRadioOptions("send"); //sets by default the form GetOrSendRadioOptions to "send".
         model.addAttribute("banktransactionFormDTO",bankTransactionFormDTO);
         return "banktransaction";
+    }
+
+
+    @Transactional
+    @PostMapping("/banktransaction")
+    public String postBanktransactionGetMoney(
+            @Valid @ModelAttribute("banktransactionFormDTO") BankTransactionFormDTO bankTransactionFormDTO,
+            BindingResult bindingResult,
+            Model model) {
+
+        logger.info("POST: /banktransaction");
+        User connectedUser = userService.getCurrentUser();
+        model.addAttribute("user", connectedUser);//list of transactions + preferred currency
+        model.addAttribute("paged", bankTransactionService.getCurrentUserBankTransactionPage(1, 5));
+
+        if (bindingResult.hasErrors()) {
+            return "banktransaction";
+        }
+
+        //cross-record validation : Currency not allowed in our list
+        if ( !currencyPermited.getCurrencyList().contains(bankTransactionFormDTO.getCurrency()) ) {
+            bindingResult.rejectValue("currency", "UnknownCurrency", "This currency is not allowed.");
+            return "banktransaction";
+        }
+
+        BankTransaction bankTransaction = convertToEntity(bankTransactionFormDTO);
+
+        //cross-record validation : calculate user amount after transaction, UserAmountException thrown if amount is invalid
+        BigDecimal connectedUserAmountAfterTransaction;
+        connectedUserAmountAfterTransaction = userService.sumAmountCalculate(connectedUser, bankTransaction.getAmount(), bankTransaction.getCurrency());
+
+        //update user amount:
+        connectedUser.setAmount(connectedUserAmountAfterTransaction);
+
+        //create banktransaction:
+        bankTransactionService.create(bankTransaction);
+
+
+        //redirection do not use the current Model, it goes to GET /bantransaction
+        return "redirect:/banktransaction";
     }
 
 
