@@ -18,6 +18,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -46,10 +47,13 @@ public class UserServiceTest {
     User user1;
     User user2;
 
+    LocalDateTime now;
+
     @BeforeEach
     void initialize() {
-        user1 = new User(1,"John","Doe","johndoe@mail.com","password","4545dddj", Currency.getInstance("USD"), new BigDecimal(100),new HashSet<>(), new HashSet<>(),new HashSet<>(), new HashSet<>());
-        user2 = new User(2,"Jane","Doe","janedoe@mail.com","password","45445ddds",Currency.getInstance("EUR"),new BigDecimal(200),new HashSet<>(),new HashSet<>(), new HashSet<>(), new HashSet<>());
+        now = LocalDateTime.of(2023,04,04,13,52,50);
+        user1 = new User(1,"John","Doe","johndoe@mail.com","password","4545dddj", Currency.getInstance("USD"), new BigDecimal(100), true, now,new HashSet<>(), new HashSet<>(),new ArrayList<>(), new HashSet<>());
+        user2 = new User(2,"Jane","Doe","janedoe@mail.com","password","45445ddds",Currency.getInstance("EUR"),new BigDecimal(200), true, now,new HashSet<>(),new HashSet<>(), new ArrayList<>(), new HashSet<>());
     }
 
 
@@ -57,7 +61,7 @@ public class UserServiceTest {
     void testFindByEmail() {
         // Arrange
         String email = "johndoe@mail.com";
-        User user = new User(1,"John","Doe","johndoe@mail.com","password","4545dddj", Currency.getInstance("USD"), new BigDecimal(100),new HashSet<>(),  new HashSet<>(),new HashSet<>(), new HashSet<>());
+        User user = new User(1,"John","Doe","johndoe@mail.com","password","4545dddj", Currency.getInstance("USD"), new BigDecimal(100), true,now,new HashSet<>(), new HashSet<>(),new ArrayList<>(), new HashSet<>());
         when(iUserRepository.findByEmail(email)).thenReturn(user);
         // Act
         User resultUser = userServiceImpl.findByEmail(email);
@@ -103,14 +107,14 @@ public class UserServiceTest {
 
     @Test
     void createUser() {
-        User user = new User(null, "Marc", "Anthony", "marc@email.com", "password", "1454",Currency.getInstance("USD"),new BigDecimal(100), new HashSet<>(),  new HashSet<>(), new HashSet<>(), new HashSet<>());
+        User user = new User(null, "Marc", "Anthony", "marc@email.com", "password", "1454",Currency.getInstance("USD"),new BigDecimal(100), true, now, new HashSet<>(),  new HashSet<>(), new ArrayList<>(), new HashSet<>());
 
-        User userExpected = new User(null, "Marc", "Anthony", "marc@email.com", "passwordEncrypted", "1454", Currency.getInstance("USD"),new BigDecimal(200),new HashSet<>(),  new HashSet<>(), new HashSet<>(), new HashSet<>());
+        User userExpected = new User(null, "Marc", "Anthony", "marc@email.com", "passwordEncrypted", "1454", Currency.getInstance("USD"),  new BigDecimal(200), true, now,new HashSet<>(),  new HashSet<>(), new ArrayList<>(), new HashSet<>());
 
-        HashSet<Role> hashSet = new HashSet<>();
+        List<Role> list = new ArrayList<>();
 
-        hashSet.add(new Role(1, "USER", new ArrayList<>()));
-        userExpected.setRoles(hashSet);
+        list.add(new Role(1, "USER", new ArrayList<>()));
+        userExpected.setRoles(list);
 
         when(bCryptPasswordEncoder.encode("password")).thenReturn("passwordEncrypted");
         when(iRolesRepository.findByroleName("USER")).thenReturn(new Role(1, "USER", new ArrayList<>()));
