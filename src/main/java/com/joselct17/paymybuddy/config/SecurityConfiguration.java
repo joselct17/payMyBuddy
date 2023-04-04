@@ -33,9 +33,12 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeHttpRequests((requests) -> requests
+                        .requestMatchers("/**").permitAll()
                         .requestMatchers("/login/**").permitAll()
                         .requestMatchers("/registration/**").permitAll()
-//                        .requestMatchers("/usertransaction/**").hasAnyRole("USER")
+                        .requestMatchers("/usertransaction/**").hasAnyRole("USER")
+                        .requestMatchers("/banktransaction/**").hasAnyRole("USER")
+                        .requestMatchers("/connection/**").hasAnyRole("USER")
                         .anyRequest().authenticated()
                 )
                 .formLogin((form) -> form
@@ -51,7 +54,9 @@ public class SecurityConfiguration {
 //
 //                )
 
-                .logout((logout) -> logout.permitAll());
+                .logout((logout) -> logout.permitAll()
+                .logoutSuccessUrl("/")
+                );
 
         return http.build();
     }
