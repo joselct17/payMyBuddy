@@ -54,6 +54,7 @@ public class UserServiceImpl implements IUserService {
         Role role = roleRepository.findByroleName(TbConstants.Roles.USER);
 
         user.setDateTimeInscription(localDateTimeService.now());
+        user.setEnabled(true);
         String encryptedPassword = bCryptPasswordEncoder.encode(user.getPassword());
         user.setPassword(encryptedPassword);
 
