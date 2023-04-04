@@ -15,51 +15,43 @@
 <div th:replace="~{common/header.html :: navigation}"></div>
 
 
-<!-- FORM : Add a connection -->
-<div class="container">
-  <form method="POST" class="form-inline" th:action="@{/connection}" >
-    <label for="email" class="my-2 mx-2">Add a new contact:</label>
-    <input name="email" id="email" type="text" class="form-control my-2 mx-2" placeholder="Email to add as connection" autofocus="true">
-    <span class="has-error" th:text="${error}"></span>
-    <button class="btn btn-lg btn-primary my-2 mx-2" type="submit">Submit</button>
-  </form>
-</div>
-
-
-<div class="container">
-  <div class="row">
-    <div class="col-lg-10 mt-5 mb-5">
-      <table id="connections" class="table table-bordered table-responsive-sm">
-        <thead>
-        <tr>
-          <th>Firstname</th>
-          <th>Lastname</th>
-          <th>Email</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="page : ${paged.page}">
-          <td th:text="${page.firstName}">id</td>
-          <td th:text="${page.lastName}">title</td>
-          <td th:text="${page.email}">body</td>
-          <td>
-            <form method="POST" th:action="@{/connectionDelete}" >
-              <button class="btn btn-danger" type="submit" name="id" th:value="${page.id}">Delete</button>
-            </form>
-          </td>
-        </tr>
-        </tbody>
-      </table>
-
-
+<div class="modal fade" id="connectionModal" tabindex="-1" aria-labelledby="connectionModal" aria-hidden="true" th:fragment="connection">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title fs-5" id="loginModalLabel">Pay my buddy</h2>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form method="post" th:action="@{/connection}">
+          <input type="text" id="email" name="email" required placeholder="Email">
+          <div class="modal-footer">
+            <span class="has-error" th:text="${error}"></span>
+            <input type="submit" value="Add a Connection">
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 </div>
 
 
+<!--&lt;!&ndash; FORM : Add a connection &ndash;&gt;-->
+<!--<div class="container container-transaction">-->
+<!--  <form method="POST" class=" row form-inline" th:action="@{/connection}" >-->
+<!--    <div class="col-auto">-->
+<!--      <label for="email" class="my-2 mx-2">Add a new contact:</label>-->
+<!--    </div>-->
+<!--    <div class="col-auto">-->
+<!--      <input name="email" id="email" type="text" class="form-control my-2 mx-2" placeholder="Email to add as connection" autofocus="true">-->
+<!--    </div>-->
+<!--    <div class="col-auto">-->
+<!--      <span class="has-error" th:text="${error}"></span>-->
+<!--      <button class="btn btn-lg btn-primary my-2 mx-2" type="submit">Submit</button>-->
+<!--    </div>-->
 
-
-
+<!--  </form>-->
+<!--</div>-->
 
 
 
