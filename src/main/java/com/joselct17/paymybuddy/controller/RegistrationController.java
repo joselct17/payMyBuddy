@@ -38,7 +38,7 @@ public class RegistrationController {
     public String registration(Model model) {
         model.addAttribute("userForm", new UserFormDTO());
 
-        return "userForm";
+        return "register";
     }
 
 
