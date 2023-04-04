@@ -7,7 +7,7 @@
 <body>
 <!-- PAGED -->
 <nav aria-label="Page navigation" class="paging" th:fragment="paged">
-    <ul class="pagination" th:if="${paged.page.totalPages > 1}">
+    <ul class="pagination justify-content-center" th:if="${paged.page.totalPages > 1}">
         <li class="page-item"
             th:classappend="${!paged.paging.isPrevEnabled()? 'disabled' : ''}">
             <a class="page-link"
