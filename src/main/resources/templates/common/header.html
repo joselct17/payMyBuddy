@@ -15,11 +15,11 @@
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="/">Home</a>
         </li>
-        <li class="nav-item">
+        <li sec:authorize="isAuthenticated()" class="nav-item">
           <a class="nav-link" href="usertransaction">Transfert</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Profile</a>
+        <li sec:authorize="isAuthenticated()" class="nav-item">
+          <a class="nav-link" href="banktransaction">Bank Transaction</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">Contact</a>
