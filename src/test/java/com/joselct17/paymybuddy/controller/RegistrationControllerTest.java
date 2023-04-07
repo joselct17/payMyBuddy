@@ -1,13 +1,22 @@
 package com.joselct17.paymybuddy.controller;
 
+import com.joselct17.paymybuddy.repository.IUserRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.jdbc.JdbcTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 
@@ -16,6 +25,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -27,6 +37,18 @@ public class RegistrationControllerTest {
     @Mock
     private ModelMapper modelMapperMock;
 
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+    
+    
+    @BeforeEach
+    void clearDatabase(@Autowired JdbcTemplate jdbcTemplate) {
+        JdbcTestUtils.deleteFromTables(jdbcTemplate, "user_roles","user" );
+    }
+
+
+
+
     @Test
     void getRegistration() throws Exception {
         mockMvc.perform(get("/registration"))
@@ -37,9 +59,9 @@ public class RegistrationControllerTest {
     @Test
     void PostRegistrationForm_shouldSucceedAndRedirected() throws Exception {
         mockMvc.perform(post("/registration")
-                        .param("firstName", "john")
-                        .param("lastName", "doe")
-                        .param("email", "nan@mail.com")
+                        .param("firstName", "Big")
+                        .param("lastName", "Boy")
+                        .param("email", "Big@Boy.com")
                         .param("password", "123")
                         .param("confirmPassword", "123")
                         .param("bankAccount", "1AX123456789")
@@ -55,7 +77,7 @@ public class RegistrationControllerTest {
         mockMvc.perform(post("/registration")
                         .param("firstName", "john")
                         .param("lastName", "doe")
-                        .param("email", "dddddddd@mail.com")
+                        .param("email", "test@test.com")
                         .param("password", "123")
                         .param("confirmPassword", "123456789")
                         .param("bankAccount", "1AX123456789")
