@@ -55,7 +55,6 @@
         </div>
         <div class="col-auto">
           <select th:field="*{currency}" class="form" required>
-            <!--/* Accessing directly bean "currenciesAllowed" in Spring application context: */-->
             <option
                     th:each="currency : ${@currencyPermited.getCurrencyList()}"
                     th:value="${currency}" th:text="${currency}">
