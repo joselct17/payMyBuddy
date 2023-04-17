@@ -8,6 +8,8 @@ import com.joselct17.paymybuddy.service.interfaces.ILocalDateTimeService;
 import com.joselct17.paymybuddy.service.interfaces.IPagingService;
 import com.joselct17.paymybuddy.service.interfaces.IUserService;
 import com.joselct17.paymybuddy.utils.paging.Paged;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class BankTransactionServiceImpl implements IBankTransactionService {
 
+    Logger logger = LoggerFactory.getLogger(BankTransactionServiceImpl.class);
     @Autowired
     IUserService userService;
 
@@ -33,6 +36,7 @@ public class BankTransactionServiceImpl implements IBankTransactionService {
 
     @Override
     public void create(BankTransaction bankTransaction) {
+        logger.debug("Calling create(BankTransaction BankTransaction)");
         User currentUser= userService.getCurrentUser();
 
         bankTransaction.setBankAccount(currentUser.getBankAccount());
