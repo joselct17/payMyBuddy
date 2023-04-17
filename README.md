@@ -22,3 +22,5 @@ Project goals:
 
 ![database](/images/modelePhysique.png)
 
+![SQL_file] (/sql/projet_6.sql)
+
