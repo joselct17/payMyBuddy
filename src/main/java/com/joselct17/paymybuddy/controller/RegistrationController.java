@@ -7,6 +7,8 @@ import com.joselct17.paymybuddy.model.dto.UserFormDTO;
 import com.joselct17.paymybuddy.service.interfaces.ISecurityService;
 import com.joselct17.paymybuddy.service.interfaces.IUserService;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,7 +22,7 @@ import javax.validation.Valid;
 
 @Controller
 public class RegistrationController {
-
+    Logger logger = LoggerFactory.getLogger(RegistrationController.class);
     @Autowired
     private IUserService iUserService;
 
@@ -36,6 +38,7 @@ public class RegistrationController {
 
     @GetMapping("/registration")
     public String registration(Model model) {
+        logger.info("GET: /registration");
         model.addAttribute("userForm", new UserFormDTO());
 
         return "register";
@@ -44,18 +47,15 @@ public class RegistrationController {
 
     @PostMapping("/registration")
     public String registration(@Valid @ModelAttribute("userForm") UserFormDTO userFormDTO, BindingResult bindingResult, Model model) {
-
+        logger.info("POST: /registration");
         if (bindingResult.hasErrors()) {
-            return "registration";
+            return "register";
         }
         if ( iUserService.existsByEmail(userFormDTO.getEmail()) ) {
             bindingResult.rejectValue("email", "", "This email already exists");
-            return "registration exist email";
+            return "register";
         }
-       /* if ( !currencyPermited.getCurrencyList().contains(userFormDTO.getCurrency()) ) {
-            bindingResult.rejectValue("currency", "UnknownCurrency", "This currency is not allowed.");
-            return "registration problem currency";
-        }*/
+
         User user = convertToEntity(userFormDTO);
         iUserService.create(user);
 
