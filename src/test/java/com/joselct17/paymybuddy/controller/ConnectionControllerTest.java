@@ -1,6 +1,7 @@
 package com.joselct17.paymybuddy.controller;
 
 
+import com.joselct17.paymybuddy.config.SpringWebTestConfig;
 import com.joselct17.paymybuddy.model.User;
 import com.joselct17.paymybuddy.service.interfaces.IUserService;
 import com.joselct17.paymybuddy.utils.paging.Paged;
@@ -9,12 +10,17 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
+
+import static org.junit.Assert.assertFalse;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 
@@ -23,10 +29,11 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@SpringBootTest
-@AutoConfigureMockMvc
+@WebMvcTest(controllers = ConnectionController.class)
+@Import(SpringWebTestConfig.class)
 public class ConnectionControllerTest {
 
     @Autowired
@@ -55,7 +62,7 @@ public class ConnectionControllerTest {
 
     }
 
-    @WithUserDetails("test@test.com") //user from SpringSecurityWebTestConfig.class
+    @WithUserDetails("jane@doe.com") //user from SpringSecurityWebTestConfig.class
     @Test
     void GetConnectionPage_shouldSucceed() throws Exception {
         //ARRANGE:
@@ -65,8 +72,38 @@ public class ConnectionControllerTest {
         mockMvc.perform(get("/connection"))
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(view().name("connection"))
-                .andExpect(model().size(1))
-                .andExpect(model().attributeExists("paged"));
+                .andExpect(model().attributeExists("paged"))
+                .andExpect(model().attributeExists("user"))
+                .andExpect(model().size(2));
+
+    }
+
+
+
+
+
+    @WithUserDetails("jane@doe.com") //user from SpringSecurityWebTestConfig.class
+    @Test
+    void PostConnectionPage_shouldFail_connectionUnknown() throws Exception {
+        //ARRANGE:
+        when(userService.getCurrentUser()).thenReturn(user1);//user1 is current connected user
+        when(userService.existsByEmail(user2.getEmail())).thenReturn(false);//check user2 new connection exists in DB
+        when(userService.getCurrentUserConnectionPage(1, 5)).thenReturn(paged); //display list of connections
+
+        //ACT+ASSERT:
+        mockMvc.perform(post("/connection")
+                        .param("email", user2.getEmail()) //try to add user2 as new connection
+                        .with(csrf()))
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(view().name("connection"))
+                .andExpect(model().size(2))
+                .andExpect(model().attributeExists("paged"))
+                .andExpect(model().attribute("paged", paged))
+                .andExpect(model().attributeExists("error"))
+                .andExpect(model().attribute("error", "Email Unknown"))
+        ;
+
+        assertFalse(user1.getConnections().contains(user2));
     }
 
 }
