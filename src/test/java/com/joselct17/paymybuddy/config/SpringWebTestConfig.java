@@ -22,8 +22,8 @@ public class SpringWebTestConfig {
     //Need to create a UserDetailsService in SpringSecurityWebTestConfig.class because @Service are not loaded by @WebMvcTest
     @Bean
     public UserDetailsService userDetailsService() {
-        User basicUser = new User("user@company.com", "password", Arrays.asList(
-                new SimpleGrantedAuthority("ROLE_USER")
+        User basicUser = new User("jane@doe.com", "password", Arrays.asList(
+                new SimpleGrantedAuthority("USER")
         ));
         return new InMemoryUserDetailsManager(Arrays.asList(
                 basicUser /*, managerActiveUser*/
