@@ -9,6 +9,8 @@ import com.joselct17.paymybuddy.service.interfaces.ITransactionService;
 import com.joselct17.paymybuddy.service.interfaces.IUserService;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -36,6 +38,7 @@ import java.util.Map;
 @Controller
 public class TransactionController {
 
+    Logger logger= LoggerFactory.getLogger(TransactionController.class);
 
     @Autowired
     private ModelMapper modelMapper;
@@ -101,6 +104,7 @@ public class TransactionController {
             @RequestParam(value = "pageNumber", required = false, defaultValue = "1") int pageNumber,
             @RequestParam(value = "size", required = false, defaultValue = "5") int size,
             Model model) {
+        logger.info("GET: /usertransaction");
 
 
         User user = iUserService.getCurrentUser();
@@ -117,7 +121,7 @@ public class TransactionController {
     @Transactional
     @PostMapping("/usertransaction")
     public String postTransactionGetMoney(@Valid @ModelAttribute("transactionForm") TransactionFormDTO transactionFormDTO, BindingResult bindingResult, Model model) {
-
+        logger.info("POST: /usertransaction");
         User userSource = iUserService.getCurrentUser();
 
         model.addAttribute("user", userSource);
@@ -132,6 +136,7 @@ public class TransactionController {
 
 
         if (!userSource.getConnections().contains(userDestination)) {
+            logger.debug("Failure: unknown buddy");
             bindingResult.rejectValue("userDestinationId", "userDestinationNotABuddy", "Please select a buddy !");
             return "transaction";
         }
@@ -166,6 +171,7 @@ public class TransactionController {
             );
 
         }catch (Exception e) {
+            logger.debug("UserAmountException");
             bindingResult.rejectValue("amount",  e.getMessage());
             return "transaction";
         }
@@ -174,10 +180,8 @@ public class TransactionController {
         userSource.setAmount(sourceUserAmountAfterTransaction);
         userDestination.setAmount(destinationUserAmountAfterTransaction);
 
-
         //create usertransaction
         iTransactionService.create(transaction, feesMap);
-
 
         return "redirect:/usertransaction";
     }
