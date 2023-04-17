@@ -4,6 +4,8 @@ import com.joselct17.paymybuddy.model.User;
 import com.joselct17.paymybuddy.service.implementation.CostumDetailsService;
 import com.joselct17.paymybuddy.service.interfaces.ITransactionService;
 import com.joselct17.paymybuddy.service.interfaces.IUserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Controller
 public class ConnectionController {
 
+    Logger logger = LoggerFactory.getLogger(ConnectionController.class);
     @Autowired
     IUserService iUserService;
 
@@ -29,13 +32,14 @@ public class ConnectionController {
         User user = iUserService.getCurrentUser();
         model.addAttribute("user", user);
         model.addAttribute("paged", iUserService.getCurrentUserConnectionPage(pageNumber, size));
+        logger.info("GET: /connection");
         return "connection";
     }
 
 
     @PostMapping("/connection")
     public String connectionAdd(@RequestParam String email , Model model) {
-
+        logger.info("POST /connection");
         User user = iUserService.getCurrentUser();
         //check connection mail exists in DB:
         if ( !iUserService.existsByEmail(email) ) {
@@ -60,7 +64,7 @@ public class ConnectionController {
 
     @PostMapping("/connectionDelete")
     public String connectionDelete(@RequestParam Long id) {
-
+        logger.info("POST /connectionDelete");
         User user = iUserService.getCurrentUser();
         user.getConnections().removeIf(connectionUser -> (connectionUser.getId().equals(id)) );
         iUserService.update(user);
