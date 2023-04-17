@@ -1,7 +1,6 @@
 package com.joselct17.paymybuddy.controller;
 
 import com.joselct17.paymybuddy.config.CurrencyPermited;
-import com.joselct17.paymybuddy.exceptions.UserAmountException;
 import com.joselct17.paymybuddy.model.BankTransaction;
 import com.joselct17.paymybuddy.model.User;
 import com.joselct17.paymybuddy.model.dto.BankTransactionFormDTO;
