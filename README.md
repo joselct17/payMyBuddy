@@ -22,5 +22,5 @@ Project goals:
 
 ![database](https://github.com/joselct17/payMyBuddy/blob/master/images/modelePhysique.PNG)
 
-![SQL_file](/sql/projet_6.sql)
+![SQL_file](https://github.com/joselct17/payMyBuddy/blob/master/sql/projet_6.sql)
 
