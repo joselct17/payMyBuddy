@@ -21,30 +21,10 @@ public class LoginController {
 
     Logger logger = LoggerFactory.getLogger(LoginController.class);
 
-    private static String authorizationRequestBaseUri
-            = "oauth2/authorization";
-    Map<String, String> oauth2AuthenticationUrls
-            = new HashMap<>();
-
-    @Autowired
-    private ClientRegistrationRepository clientRegistrationRepository;
-
 
     @GetMapping("/login")
-    public String getLoginPage(Model model) {
-        Iterable<ClientRegistration> clientRegistrations = null;
-        ResolvableType type = ResolvableType.forInstance(clientRegistrationRepository)
-                .as(Iterable.class);
-        if (type != ResolvableType.NONE &&
-                ClientRegistration.class.isAssignableFrom(type.resolveGenerics()[0])) {
-            clientRegistrations = (Iterable<ClientRegistration>) clientRegistrationRepository;
-        }
-
-        clientRegistrations.forEach(registration ->
-                oauth2AuthenticationUrls.put(registration.getClientName(),
-                        authorizationRequestBaseUri + "/" + registration.getRegistrationId()));
-        model.addAttribute("urls", oauth2AuthenticationUrls);
-
+    public String loginPage() {
+        logger.info("GET/login");
         return "login";
     }
 }
