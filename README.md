@@ -6,11 +6,11 @@ Openclassrooms project number 6
 
 Web application prototype for the startup Pay My Buddy. This is a Spring Boot application for project number 6 of [Openclassrooms](https://openclassrooms.com/) java back-end formation.
 
-![homepage](/images/homepage.PNG)
-![register](/images/RegisterPage.png)
-![login](/images/LoginPage.png)
-![transaction](/images/userTransaction.png)
-![bankTransaction](/images/BankTransaction.png)
+![homepage](https://github.com/joselct17/payMyBuddy/blob/master/images/homePage.PNG)
+![register](https://github.com/joselct17/payMyBuddy/blob/master/images/RegisterPage.PNG)
+![login](https://github.com/joselct17/payMyBuddy/blob/master/images/LoginPage.PNG)
+![transaction](https://github.com/joselct17/payMyBuddy/blob/master/images/UserTransaction.PNG)
+![bankTransaction](https://github.com/joselct17/payMyBuddy/blob/master/images/BankTransaction.PNG)
 
 
 Project goals:
@@ -18,9 +18,9 @@ Project goals:
 * Provide UML class diagram (see 2 images below)
 * Create a java web app Java with repository pattern.
 
-![UML-class-diagram](/images/ulmMaquette.png)
+![UML-class-diagram](https://github.com/joselct17/payMyBuddy/blob/master/images/ulmMaquette.PNG)
 
-![database](/images/modelePhysique.png)
+![database](https://github.com/joselct17/payMyBuddy/blob/master/images/modelePhysique.PNG)
 
 ![SQL_file](/sql/projet_6.sql)
 
