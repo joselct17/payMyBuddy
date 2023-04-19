@@ -59,44 +59,6 @@ public class TransactionController {
     private OAuth2AuthorizedClientService authorizedClientService;
 
 
-//    @GetMapping("/usertransaction")
-//    public String getUsertransaction(
-//            @RequestParam(value = "pageNumber", required = false, defaultValue = "1") int pageNumber,
-//            @RequestParam(value = "size", required = false, defaultValue = "5") int size,
-//            Model model,
-//            OAuth2AuthenticationToken authentication) {
-//
-//        User user = iUserService.getCurrentUser();
-//        model.addAttribute("user", user);//needed to display current user amount + currency
-//        model.addAttribute("paged", iTransactionService.getCurrentUserUserTransactionPage(pageNumber, size));
-//       // model.addAttribute("userEmail", iUserService.findByEmail(user.getEmail()));
-//
-//        TransactionFormDTO transactionFormDTO = new TransactionFormDTO();
-//        //transactionFormDTO.setCurrency(user.getCurrency()); //sets by default the form currency to currency of the user.
-//        model.addAttribute("transactionForm",transactionFormDTO);
-//
-//        OAuth2AuthorizedClient client = authorizedClientService
-//                .loadAuthorizedClient(
-//                        authentication.getAuthorizedClientRegistrationId(),
-//                        authentication.getName());
-//
-//        String userInfoEndpointUri = client.getClientRegistration()
-//                .getProviderDetails().getUserInfoEndpoint().getUri();
-//
-//        if (!StringUtils.isEmpty(userInfoEndpointUri)) {
-//            RestTemplate restTemplate = new RestTemplate();
-//            HttpHeaders headers = new HttpHeaders();
-//            headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + client.getAccessToken()
-//                    .getTokenValue());
-//            HttpEntity entity = new HttpEntity("", headers);
-//            ResponseEntity<Map> response = restTemplate
-//                    .exchange(userInfoEndpointUri, HttpMethod.GET, entity, Map.class);
-//            Map userAttributes = response.getBody();
-//            model.addAttribute("name", userAttributes.get("name"));
-//        }
-//
-//        return "transaction";
-//    }
 
 
     @GetMapping("/usertransaction")
