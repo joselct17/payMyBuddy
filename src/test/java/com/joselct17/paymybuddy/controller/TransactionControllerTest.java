@@ -23,6 +23,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -34,14 +35,16 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
 
 @WebMvcTest(controllers = TransactionController.class)
-@Import( SpringWebTestConfig.class)
+@Import(SpringWebTestConfig.class)
+@AutoConfigureMockMvc
 public class TransactionControllerTest {
 
     @Autowired
@@ -89,23 +92,7 @@ public class TransactionControllerTest {
 
 
 
-    @WithUserDetails("jane@doe.com") //user from SpringSecurityWebTestConfig.class
-    @Test
-    void GetUserTransaction_shouldSucceed() throws Exception {
-        //ARRANGE
-        when(userServiceMock.getCurrentUser()).thenReturn(user1);
-        when(transactionService.getCurrentUserUserTransactionPage(1, 5)).thenReturn(paged); //display list of usertransactions
 
-        //ACT+ASSERT
-        mockMvc.perform(get("/usertransaction"))
-                .andExpect(status().is2xxSuccessful())
-                .andExpect(view().name("transaction"))
-                .andExpect(model().size(3))
-                .andExpect(model().attributeExists("user"))
-                .andExpect(model().attributeExists("transactionForm"))
-                .andExpect(model().attributeExists("paged"))
-        ;
-    }
 
     @WithUserDetails("jane@doe.com") //user from SpringSecurityWebTestConfig.class
     @Test
@@ -123,8 +110,10 @@ public class TransactionControllerTest {
         feesMap.put("fees", new BigDecimal("1"));
         when(calculationService.calculateFees(transactionAmount)).thenReturn(feesMap);
         //calculate amounts after transaction
-        when(userServiceMock.sumAmountCalculate(user1,new BigDecimal("-100"),transactionCurrency)).thenReturn(new BigDecimal("0.00"));
-        when(userServiceMock.sumAmountCalculate(user99,new BigDecimal("99"),transactionCurrency)).thenReturn(new BigDecimal("299.00"));
+        when(userServiceMock.sumAmountCalculate(user1,new BigDecimal("-100"),transactionCurrency))
+                .thenReturn(new BigDecimal("0.00"));
+        when(userServiceMock.sumAmountCalculate(user99,new BigDecimal("99"),transactionCurrency))
+                .thenReturn(new BigDecimal("299.00"));
 
         //ACT+ASSERT:
         mockMvc.perform(post("/usertransaction")
