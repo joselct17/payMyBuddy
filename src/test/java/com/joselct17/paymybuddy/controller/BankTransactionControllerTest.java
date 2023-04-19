@@ -45,6 +45,7 @@ public class BankTransactionControllerTest {
     @BeforeEach
     void clearDatabase(@Autowired JdbcTemplate jdbcTemplate) {
         JdbcTestUtils.deleteFromTables(jdbcTemplate, "banktransaction");
+        jdbcTemplate.update("DELETE FROM user_connections");
         jdbcTemplate.update("DELETE FROM user_roles");
         jdbcTemplate.update("DELETE FROM user");
         jdbcTemplate.update("INSERT INTO user (first_name, last_name, amount, currency, bank_account, date_time_inscription, email, password) " +
