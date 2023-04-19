@@ -45,7 +45,7 @@ public class ARegistrationControllerTest {
 
     @BeforeEach
     void clearDatabase(@Autowired JdbcTemplate jdbcTemplate) {
-        JdbcTestUtils.deleteFromTables(jdbcTemplate, "user_roles","user" );
+        JdbcTestUtils.deleteFromTables(jdbcTemplate, "user_connections","user_roles","user" );
     }
 
 
